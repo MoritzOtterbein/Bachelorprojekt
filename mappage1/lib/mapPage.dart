@@ -29,14 +29,12 @@ class _InitExampleState extends State{
   void initState() {
     requestLocationPermission();
     _zoomPanBehavior = MapZoomPanBehavior();
-
     super.initState();
     main();
   }
 
 
-  @override
-  Widget build(BuildContext context) {
+  Widget builNew (context) {
 
 
     return FutureBuilder(future:main(),builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -77,6 +75,12 @@ class _InitExampleState extends State{
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+
 }
 
 
@@ -114,14 +118,17 @@ void  requestLocationPermission() async {
 
 }
 Future<List<LatLng>> main() async {
-  Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+
 
   // Initialize the openrouteservice with your API key.
   final OpenRouteService client = OpenRouteService(apiKey: '5b3ce3597851110001cf6248f6262135c4d844bc836cdd2554165582');
 
   // Example coordinates to test between
-  const double startLat = 50.56504296719607;
-  const double startLng = 9.686902986524037;
+  Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+//  double startLat = position.latitude;
+//  double startLng = position.longitude;
+  const double startLat = 50.55;
+  const double startLng = 10.55;
   const double endLat = 50.56460680668803;
   const double endLng = 9.691022859340723;
 
@@ -154,12 +161,54 @@ Future<List<LatLng>> main() async {
   // Use Polyline to draw route on map or do anything else with the data :)
 }
 
-
-void getLocation() async {
-  // Abfrage der aktuellen Position
-  Position position = await Geolocator.getCurrentPosition();
-  print(position.latitude);
-  print(position.longitude);
+Widget bottomDetailsSheet() {
+  return DraggableScrollableSheet(
+    initialChildSize: .2,
+    minChildSize: .1,
+    maxChildSize: .6,
+    builder: (BuildContext context, ScrollController scrollController) {
+      return Container(
+        color: Colors.lightGreen[100],
+        child: ListView(
+          controller: scrollController,
+          children: [
+            ListTile(
+              title: Text(
+                "NAME",
+              ),
+              subtitle: Text(
+                "animalNames[selectedTile]",
+              ),
+            ),
+            ListTile(
+              title: Text(
+                "FAMILY",
+              ),
+              subtitle: Text(
+                "animalFamily[selectedTile]",
+              ),
+            ),
+            ListTile(
+              title: Text(
+                "LIFESPAN",
+              ),
+              subtitle: Text(
+                "animalLifeSpan[selectedTile]",
+              ),
+            ),
+            ListTile(
+              title: Text(
+                "WEIGHT",
+              ),
+              subtitle: Text(
+                "animalWeight[selectedTile]",
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
 
 
